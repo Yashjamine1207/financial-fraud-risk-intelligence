@@ -1,0 +1,40 @@
+{
+  "dataset_name": "IEEE-CIS Fraud Detection",
+  "source_url": "https://www.kaggle.com/competitions/ieee-fraud-detection/data",
+  "competition_rules_url": "https://www.kaggle.com/competitions/ieee-fraud-detection/rules",
+  "licence_note": "Kaggle competition data. Access and use are subject to the IEEE-CIS Fraud Detection competition rules accepted on Kaggle.",
+  "recorded_at_utc": "2026-09-14T04:38:52.102153+00:00",
+  "raw_directory": "C:\\Users\\Softmgmt\\Desktop\\MAIN_FOLDER\\WHOLE_DATA\\ML_JOBS\\MACHINE_LEARNING_PROJECTS\\Financial Fraud Risk & Investigation Intelligence Platform\\data\\raw\\ieee_cis",
+  "files": [
+    {
+      "file_name": "train_transaction.csv",
+      "relative_path": "data\\raw\\ieee_cis\\train_transaction.csv",
+      "file_size_bytes": 683351067,
+      "sha256": "3a5c83ab6b3cc13dcabe5ffa9f522307fd5f7f7b6e6f6a60c32284ca6283d642"
+    },
+    {
+      "file_name": "train_identity.csv",
+      "relative_path": "data\\raw\\ieee_cis\\train_identity.csv",
+      "file_size_bytes": 26529680,
+      "sha256": "b63c725d8377be90a995268d97f347c17d456b95db45807adcf9f59cd603c37c"
+    },
+    {
+      "file_name": "test_transaction.csv",
+      "relative_path": "data\\raw\\ieee_cis\\test_transaction.csv",
+      "file_size_bytes": 613194934,
+      "sha256": "2a8e51f1d335a86025d2b7f45beb9b78d0ab1edd726ef531d8b71a8a0065c011"
+    },
+    {
+      "file_name": "test_identity.csv",
+      "relative_path": "data\\raw\\ieee_cis\\test_identity.csv",
+      "file_size_bytes": 25797161,
+      "sha256": "3e5978cb13ca5e72f52babc4349ae0125e14b87ca8bfabe952ab67bb4ff1e10b"
+    },
+    {
+      "file_name": "sample_submission.csv",
+      "relative_path": "data\\raw\\ieee_cis\\sample_submission.csv",
+      "file_size_bytes": 6080314,
+      "sha256": "50d7e0d6fcfc6e498efc297001f252101512ccdcb34aefbde6db98f8242a3626"
+    }
+  ]
+}
