@@ -1,0 +1,17 @@
+train_transaction.csv ──┐
+                        ├── Join on TransactionID
+train_identity.csv ─────┘
+                                ↓
+                         Joined Transactions
+                                ↓
+                         Data Quality Checks
+                                ↓
+                      Chronological Data Splitting
+                                ↓
+                   Point-in-Time Behavioural Features
+                                ↓
+                        Model Training Dataset
+                                ↓
+                       Predictions and Decisions
+                                ↓
+                  Investigation Cases and Monitoring

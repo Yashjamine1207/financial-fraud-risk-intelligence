@@ -1,0 +1,19 @@
+Incoming Transaction
+        ↓
+Input Validation
+        ↓
+Feature Construction Using Historical Data
+        ↓
+Fraud-Risk Model
+        ↓
+Calibrated Fraud Probability
+        ↓
+Expected Cost and Policy Evaluation
+        ↓
+Review-Capacity Check
+        ↓
+Approve / Review / Block
+        ↓
+Store Versioned Prediction
+        ↓
+Create Investigation Case if Required

@@ -1,0 +1,22 @@
+IEEE-CIS CSV Files
+        ↓
+Data Ingestion
+        ↓
+Data Validation
+        ↓
+Parquet + PostgreSQL
+        ↓
+Point-in-Time Feature Engineering
+        ↓
+Fraud Models
+(Logistic Regression + XGBoost/LightGBM)
+        ↓
+Probability Calibration
+        ↓
+Cost-Sensitive Decision Engine
+        ↓
+Approve / Review / Block
+        ↓
+FastAPI Scoring API + Streamlit Investigation Dashboard
+        ↓
+Monitoring, MLflow and Evaluation

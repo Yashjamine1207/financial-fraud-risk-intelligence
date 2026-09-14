@@ -1,0 +1,66 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Raw datasets and generated data
+data/raw/*
+data/interim/*
+data/processed/*
+data/features/*
+
+# Keep only small recruiter-friendly samples
+!data/sample/
+!data/sample/**
+
+# Dataset archives
+*.zip
+*.7z
+*.tar
+*.gz
+
+# Models and experiment output
+models/artifacts/*
+mlruns/
+mlartifacts/
+
+# Databases and logs
+postgres_data/
+*.db
+*.sqlite
+logs/
+*.log
+
+# IDE and operating-system files
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+
+# Python build files
+build/
+dist/
+*.egg-info/
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+
+# Local secrets and credentials
+*.pem
+*.key
+credentials.json
