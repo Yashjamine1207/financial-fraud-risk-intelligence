@@ -1,0 +1,58 @@
+# Feature Engineering Configuration
+# All time windows are in the units specified below
+
+# Velocity feature windows (in minutes)
+# Counts transactions in prior N minutes
+velocity_windows:
+  - 5    # 5-minute velocity
+  - 60   # 1-hour velocity
+  - 1440 # 24-hour velocity
+
+# Amount feature windows (in hours)
+# Rolling mean, std, z-score of transaction amounts
+amount_windows:
+  - 1    # 1-hour amount stats
+  - 24   # 24-hour amount stats
+  - 168  # 7-day amount stats
+
+# Entity groups for per-entity features
+# These will be used to compute velocity/amount/recency per entity
+entity_groups:
+  - card1
+  - card1_card2
+  - addr1
+  - DeviceInfo
+  - R_emaildomain
+
+# Target encoding configuration
+# These features use fraud labels, so they must be created with chronological
+# out-of-fold training logic. Validation data uses mappings fitted on train only.
+target_encoding:
+  smoothing: 10
+  min_samples: 20
+  oof_folds: 5
+
+  # Use only categorical fields that are available at transaction scoring time.
+  # We do not target-encode identity fields or behavioural features here.
+  columns:
+    - ProductCD
+    - card4
+    - card6
+    - P_emaildomain
+    - R_emaildomain
+
+# Feature exclusion list
+# Columns to exclude from all feature computation
+exclude_columns:
+  - TransactionID
+  - isFraud
+  - TransactionDT
+  - id_07
+  - id_08
+  - id_21
+  - id_22
+  - id_23
+  - id_24
+  - id_25
+  - id_26
+  - id_27
