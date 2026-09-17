@@ -1,0 +1,13 @@
+metric_key,metric,baseline_xgboost,xgboost_plus_anomaly,candidate_minus_baseline
+pr_auc,PR-AUC,0.5392804315626084,0.5395224381693201,0.00024200660671169771
+roc_auc,ROC-AUC,0.9113472864521642,0.9098603065578992,-0.0014869798942650503
+precision_at_reference_threshold,Precision at reference threshold,0.2549278846153846,0.2564321424216559,0.0015042578062712808
+recall_at_reference_threshold,Recall at reference threshold,0.6972386587771203,0.6913214990138067,-0.00591715976331364
+f1_at_reference_threshold,F1 at reference threshold,0.37334976236578066,0.3740994396513386,0.0007496772855579703
+precision_at_k,"Precision@1,000",0.864,0.867,0.0030000000000000027
+recall_at_k,"Recall@1,000",0.28402366863905326,0.28500986193293887,0.0009861932938856066
+captured_fraud_count_at_k,"Fraud captured at 1,000 reviews",864.0,867.0,3.0
+total_fraud_count,Total known fraud in validation,3042.0,3042.0,0.0
+prediction_latency_ms_per_row,Prediction latency per row (ms),0.0029590070101497864,0.003093717614661764,0.0001347106045119775
+training_time_seconds,Training time (seconds),626.8557115999865,628.1107407999807,1.2550291999941692
+best_iteration,Best boosting iteration,499.0,498.0,-1.0
