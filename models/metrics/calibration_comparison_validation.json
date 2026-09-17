@@ -1,0 +1,158 @@
+{
+  "phase": 5,
+  "purpose": "calibration_method_comparison",
+  "champion_model": {
+    "model_name": "xgboost",
+    "model_version": "xgboost-v1.0.0",
+    "mlflow_run_id": "a1f99cff34cf44728d3b6c9499ffeee3",
+    "preprocessor_model_uri": "runs:/a1f99cff34cf44728d3b6c9499ffeee3/xgboost_preprocessor",
+    "classifier_model_uri": "runs:/a1f99cff34cf44728d3b6c9499ffeee3/xgboost_classifier"
+  },
+  "data_protection": {
+    "final_test_locked": true,
+    "final_test_loaded": false,
+    "validation_strategy": "chronological calibration-fit period followed by chronological calibration-selection period"
+  },
+  "validation_split": {
+    "validation_rows": 88581,
+    "calibration_fit_fraction_requested": 0.5,
+    "calibration_fit_rows": 44290,
+    "calibration_selection_rows": 44291,
+    "split_timestamp": 11725712.0,
+    "calibration_fit_fraud_count": 1593,
+    "calibration_selection_fraud_count": 1449
+  },
+  "selection_rule": {
+    "primary_metric": "brier_score",
+    "secondary_metric": "expected_calibration_error",
+    "provisional_selected_method": "sigmoid"
+  },
+  "results": {
+    "uncalibrated": {
+      "method": "uncalibrated",
+      "brier_score": 0.06853256871765329,
+      "expected_calibration_error": 0.16118823186314096,
+      "mean_predicted_probability": [
+        0.020390633709450687,
+        0.04060056026571624,
+        0.05963577393364169,
+        0.0812000258293505,
+        0.10710908456220398,
+        0.1395628008109152,
+        0.1833014090216526,
+        0.24968766846250465,
+        0.3736519339553495,
+        0.6839211165743505
+      ],
+      "observed_fraud_rate": [
+        0.0009029345372460496,
+        0.0020320614134116052,
+        0.002935199819372319,
+        0.0033867690223526757,
+        0.006773538044705351,
+        0.008128245653646421,
+        0.013550135501355014,
+        0.023927765237020317,
+        0.04673741250846692,
+        0.21878527884398283
+      ],
+      "bin_counts": [
+        4430,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429
+      ],
+      "pr_auc": 0.458580304106603,
+      "roc_auc": 0.897459026504985
+    },
+    "sigmoid": {
+      "method": "sigmoid",
+      "brier_score": 0.02289209346574982,
+      "expected_calibration_error": 0.003719008472513284,
+      "mean_predicted_probability": [
+        0.0006436298388296426,
+        0.001484523510242012,
+        0.0024101925388906945,
+        0.0035877185300309438,
+        0.005174309300146759,
+        0.007424008001508729,
+        0.01094512371368399,
+        0.017532883562972487,
+        0.035398307018355786,
+        0.23180002428441987
+      ],
+      "observed_fraud_rate": [
+        0.0009029345372460496,
+        0.0020320614134116052,
+        0.002935199819372319,
+        0.0033867690223526757,
+        0.006773538044705351,
+        0.008128245653646421,
+        0.013550135501355014,
+        0.023927765237020317,
+        0.04673741250846692,
+        0.21878527884398283
+      ],
+      "bin_counts": [
+        4430,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429,
+        4429
+      ],
+      "pr_auc": 0.458580304106603,
+      "roc_auc": 0.897459026504985
+    },
+    "isotonic": {
+      "method": "isotonic",
+      "brier_score": 0.022901614013658457,
+      "expected_calibration_error": 0.00423490747897626,
+      "mean_predicted_probability": [
+        0.00047797899964361034,
+        0.0017285231580943753,
+        0.0036179272956994245,
+        0.004251442453689689,
+        0.006995617652805093,
+        0.014171955553655283,
+        0.028886207678661346,
+        0.041450063526704974,
+        0.2399977792563447
+      ],
+      "observed_fraud_rate": [
+        0.0009493670886075949,
+        0.002730251183108846,
+        0.004507107361608691,
+        0.007104290991759022,
+        0.009704251386321626,
+        0.01849383538820393,
+        0.037267080745341616,
+        0.051258720048528966,
+        0.2233169129720854
+      ],
+      "bin_counts": [
+        6320,
+        5494,
+        8653,
+        3519,
+        4328,
+        6002,
+        2415,
+        3297,
+        4263
+      ],
+      "pr_auc": 0.44171360683592237,
+      "roc_auc": 0.8962770549297788
+    }
+  }
+}

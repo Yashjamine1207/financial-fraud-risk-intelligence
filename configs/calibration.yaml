@@ -1,0 +1,179 @@
+# Phase 5 calibration and decision-policy configuration.
+#
+# This file controls how the frozen Phase 4 XGBoost champion is calibrated,
+# how calibration methods are compared, and how the final holdout remains protected.
+#
+# IMPORTANT:
+# - The final test split must never be used to fit calibration methods,
+#   choose a calibration method, tune thresholds, or tune the review policy.
+# - The base XGBoost model is already selected provisionally in Phase 4.
+# - Phase 5 uses chronological validation data for calibration and policy selection.
+
+project:
+  name: financial-fraud-risk-intelligence
+  phase: 5
+
+  # This version records the sigmoid calibration selected in Step 18.
+  calibration_version: calibration-v1.0.0
+
+  # This version records the top-k capacity-constrained policy selected
+  # on the later chronological validation period in Step 29.
+  threshold_policy_version: threshold-policy-v1.0.0
+
+  # This version records the illustrative cost assumptions used throughout
+  # Phase 5. These are portfolio-project assumptions, not real bank costs.
+  cost_policy_version: policy-v0.1.0
+
+  # The operational review capacity used in production policy evaluation.
+  configured_operational_capacity: 1000
+
+champion_model:
+  model_name: xgboost
+  model_version: xgboost-v1.0.0
+  mlflow_run_id: "a1f99cff34cf44728d3b6c9499ffeee3"
+
+  # The local MLflow SQLite tracking URI is read from .env.
+  tracking_uri_env_var: MLFLOW_TRACKING_URI
+
+  # These match the artifact names in scripts/train_xgboost.py.
+  preprocessor_artifact_path: xgboost_preprocessor
+  classifier_artifact_path: xgboost_classifier
+
+data:
+  # These feature tables were generated in Phase 3 and used in Phase 4.
+  train_feature_path: data/features/point_in_time/train_behavioural_features.parquet
+  validation_feature_path: data/features/point_in_time/validation_behavioural_features.parquet
+
+  # This file must remain untouched until all validation-based choices are locked.
+  final_test_feature_path: data/interim/temporal_splits/test.parquet
+
+  target_column: isFraud
+  identifier_column: TransactionID
+  timestamp_column: TransactionDT
+
+  dataset_version: ieee-cis-v1
+  feature_version: point-in-time-v1.0.0
+  target_encoding_version: time-safe-te-v1.0.0
+
+  # A hard safety rule that Phase 5 code must verify before any operation.
+  final_test_locked: true
+
+validation_protocol:
+  # The Phase 4 model remains frozen. We split validation chronologically so that:
+  # 1. Earlier validation rows fit calibration mappings.
+  # 2. Later validation rows compare calibration methods and tune the policy.
+  #
+  # This avoids evaluating a calibrator on the same labels used to fit it.
+  calibration_fit_fraction: 0.50
+
+  # The first 50% of validation time is used only to fit Platt and isotonic mappings.
+  calibration_fit_period: earliest_validation_period
+
+  # The remaining 50% is used to select the calibration method and tune the policy.
+  calibration_selection_period: latest_validation_period
+
+  # No shuffle is ever allowed for temporal fraud data.
+  shuffle: false
+  random_seed: 42
+
+calibration:
+  # "uncalibrated" is the frozen XGBoost probability and is included as a benchmark.
+  methods:
+    - uncalibrated
+    - sigmoid
+    - isotonic
+
+  # sigmoid is Platt scaling in scikit-learn terminology.
+  # Isotonic is non-parametric and will only be selected if it improves
+  # the documented validation selection criteria.
+  primary_selection_metric: brier_score
+  secondary_selection_metric: expected_calibration_error
+
+  # Reliability-diagram settings.
+  calibration_curve:
+    n_bins: 10
+    strategy: quantile
+
+  # Expected calibration error settings.
+  expected_calibration_error:
+    n_bins: 10
+    strategy: quantile
+
+decision_policy:
+  # These are illustrative portfolio assumptions, not real bank cost estimates.
+  currency: GBP
+
+  false_negative_cost: 500.0
+  manual_review_cost: 5.0
+  false_positive_escalation_cost: 10.0
+  fraud_prevention_value: 500.0
+
+  # This is the maximum number of transactions that analysts can manually review
+  # during one decision period.
+  daily_review_capacity: 1000
+
+  # Phase 5 will derive thresholds from expected cost and capacity.
+  # No arbitrary fixed fraud threshold is permitted.
+  threshold_selection:
+    method: expected_cost_with_capacity_constraint
+    reference_threshold_for_diagnostics: 0.50
+    optimise_on: calibration_selection_period
+
+  actions:
+    approve:
+      description: "Allow the transaction without manual review."
+    review:
+      description: "Send the transaction to the ranked analyst investigation queue."
+    block:
+      description: "Escalate or block only when the calibrated risk and cost policy justify it."
+
+  risk_bands:
+    # These are reporting bands only. They are not the decision thresholds.
+    # Operational thresholds will be learned later from the validation policy search.
+    low:
+      min_probability: 0.00
+      max_probability: 0.05
+    medium:
+      min_probability: 0.05
+      max_probability: 0.20
+    high:
+      min_probability: 0.20
+      max_probability: 0.50
+    critical:
+      min_probability: 0.50
+      max_probability: 1.00
+
+evaluation:
+  metrics:
+    - brier_score
+    - expected_calibration_error
+    - calibration_curve
+    - pr_auc
+    - roc_auc
+    - precision_at_k
+    - recall_at_k
+    - fraud_captured_at_k
+    - expected_cost
+    - net_prevention_value
+
+  review_capacity: 1000
+
+artifacts:
+  # Small summaries and reports may be committed.
+  metrics_directory: models/metrics
+  report_directory: reports/evaluation
+  table_directory: reports/tables
+  figure_directory: reports/figures
+
+  # Calibrated model objects remain local and must not be committed.
+  local_calibrated_model_directory: models/artifacts/calibrated_xgboost
+
+mlflow:
+  experiment_name: fraud-intelligence-phase-5-calibration
+  tags:
+    project_phase: "5"
+    dataset_version: ieee-cis-v1
+    feature_version: point-in-time-v1.0.0
+    model_version: xgboost-v1.0.0
+    calibration_version: calibration-v1.0.0
+    cost_policy_version: policy-v0.1.0
