@@ -15,9 +15,9 @@ Test:
 - Remains locked for final evaluation.
 """
 
-from pathlib import Path
 import json
 import sys
+from pathlib import Path
 
 # Allow direct execution with: python scripts/apply_target_encoding.py
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +27,6 @@ import pandas as pd
 import yaml
 
 from src.fraud_intelligence.features import TimeSafeTargetEncoder
-
 
 # -----------------------------------------------------------------------------
 # Paths

@@ -11,7 +11,7 @@ These tests prove that:
 import pandas as pd
 import pytest
 
-from src.fraud_intelligence.features import TimeSafeTargetEncoder
+from fraud_intelligence.features import TimeSafeTargetEncoder
 
 
 @pytest.fixture

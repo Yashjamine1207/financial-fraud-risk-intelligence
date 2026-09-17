@@ -13,8 +13,8 @@ Outputs:
 - data/features/point_in_time/validation_feature_metadata.json
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Add the project root to the Python import path so the script can run directly.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +23,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import pandas as pd
 
 from src.fraud_intelligence.features import PointInTimeFeaturePipeline
-
 
 # -----------------------------------------------------------------------------
 # Input and output paths
@@ -242,12 +241,14 @@ def main() -> None:
     behavioural_feature_columns = sorted(
         column
         for column in validation_feature_df.columns
-        if (
-            column.startswith("velocity_")
-            or column.startswith("amount_")
-            or column.startswith("recency_")
-            or column.startswith("history_")
-            or column.startswith("is_new_")
+        if column.startswith(
+            (
+                "velocity_",
+                "amount_",
+                "recency_",
+                "history_",
+                "is_new_",
+            )
         )
     )
 

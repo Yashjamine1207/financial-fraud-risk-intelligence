@@ -17,8 +17,8 @@ These results describe association in the IEEE-CIS benchmark data. They do not
 prove that a feature causes fraud and must not be described as causal evidence.
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Allow direct execution with:
 # python scripts/analyse_behavioural_feature_evidence.py
@@ -29,7 +29,6 @@ import math
 
 import pandas as pd
 from scipy.stats import norm
-
 
 # -----------------------------------------------------------------------------
 # Input and output paths
@@ -240,7 +239,7 @@ def format_percentage(value: float) -> str:
     return f"{value * 100:.2f}%"
 
 
-def format_number(value: float | int) -> str:
+def format_number(value: float) -> str:
     """Format counts and numbers safely for the Markdown report."""
     if pd.isna(value):
         return "N/A"

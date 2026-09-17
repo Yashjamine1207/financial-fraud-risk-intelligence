@@ -1,0 +1,106 @@
+# =============================================================================
+# Shared modelling data contract for Phase 4
+# =============================================================================
+# This configuration controls which data Phase 4 models may use.
+#
+# Important leakage rules:
+# - Train data is used to fit preprocessing and models.
+# - Validation data is used for model comparison and selection.
+# - The final test split must NOT be loaded by any Phase 4 script.
+# - TransactionID, TransactionDT, and isFraud must never be model features.
+# =============================================================================
+
+project:
+  name: financial-fraud-risk-intelligence
+  phase: 4
+  modelling_version: "v1.0.0"
+
+data:
+  # Phase 3 leakage-safe behavioural feature tables.
+  train_path: data/features/point_in_time/train_behavioural_features.parquet
+  validation_path: data/features/point_in_time/validation_behavioural_features.parquet
+
+  # Deliberately documented but not to be read in Phase 4 model development.
+  test_path: data/interim/temporal_splits/test.parquet
+  test_locked: true
+
+  target_column: isFraud
+  transaction_id_column: TransactionID
+  timestamp_column: TransactionDT
+
+feature_contract:
+  # These columns are identifiers, timestamps, or the target.
+  # They must never enter a model feature matrix.
+  mandatory_excluded_columns:
+    - TransactionID
+    - TransactionDT
+    - isFraud
+
+  # These columns had more than 95% missing values in the Phase 2 audit.
+  # They are excluded from the Phase 4 baseline feature set.
+  high_missing_columns:
+    - id_07
+    - id_08
+    - id_21
+    - id_22
+    - id_23
+    - id_24
+    - id_25
+    - id_26
+    - id_27
+
+  # Kept separate so feature exclusions are explicit and auditable.
+  manually_excluded_columns: []
+
+  # A column is excluded if its null rate in the training data is above this value.
+  # This is calculated using train data only.
+  max_training_missing_rate: 0.95
+
+  # This project intentionally retains missingness as potential fraud-risk signal.
+  # The preprocessing pipeline will later add missingness indicators where needed.
+  preserve_missingness_signal: true
+
+  # Target-encoded features created safely in Phase 3.
+  target_encoded_columns:
+    - ProductCD_target_encoded
+    - card4_target_encoded
+    - card6_target_encoded
+    - P_emaildomain_target_encoded
+    - R_emaildomain_target_encoded
+
+preprocessing:
+  numeric:
+    imputation_strategy: median
+    add_missing_indicator: true
+    scaler: standard
+
+  categorical:
+    imputation_strategy: most_frequent
+    handle_unknown: ignore
+    encoding: onehot
+
+evaluation:
+  # All capacity metrics in Phase 4 use this daily investigation limit.
+  review_capacity: 1000
+
+  # A fixed operating threshold is reported for reference only.
+  # It must not be used to select the final operational policy.
+  reference_probability_threshold: 0.50
+
+  # Metrics to calculate for both Logistic Regression and XGBoost.
+  metrics:
+    - pr_auc
+    - roc_auc
+    - precision
+    - recall
+    - f1
+    - precision_at_k
+    - recall_at_k
+    - confusion_matrix
+    - prediction_latency_ms
+
+reproducibility:
+  random_seed: 42
+  dataset_version: ieee-cis-v1
+  feature_version: point-in-time-v1.0.0
+  target_encoding_version: time-safe-te-v1.0.0

@@ -18,8 +18,8 @@ Point-in-time safety rules:
 - Missing entity values are not treated as one shared device, address, or email.
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Add the project root to the import path so this script can be run directly.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +28,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import pandas as pd
 
 from src.fraud_intelligence.features import PointInTimeFeaturePipeline
-
 
 # -----------------------------------------------------------------------------
 # Paths

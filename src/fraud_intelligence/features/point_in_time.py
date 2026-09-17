@@ -8,9 +8,9 @@ fraud label to create behavioural features.
 
 from __future__ import annotations
 
-from collections import deque
-from datetime import datetime, timezone
 import json
+from collections import deque
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -50,7 +50,7 @@ class PointInTimeFeaturePipeline:
             config = yaml.safe_load(file)
 
         if not isinstance(config, dict):
-            raise ValueError("Feature configuration must contain a YAML mapping.")
+            raise TypeError("Feature configuration must contain a YAML mapping.")
 
         required_keys = {"velocity_windows", "amount_windows", "entity_groups"}
         missing_keys = required_keys.difference(config)
@@ -545,7 +545,7 @@ class PointInTimeFeaturePipeline:
         lookback_windows: list[str],
     ) -> None:
         """Store feature definitions for the Phase 3 feature catalogue."""
-        created_at = datetime.now(timezone.utc).isoformat()
+        created_at = datetime.now(UTC).isoformat()
 
         for feature_name in feature_names:
             self.feature_metadata.append(
@@ -573,7 +573,7 @@ class PointInTimeFeaturePipeline:
         payload = {
             "feature_pipeline_version": self.version,
             "config_path": str(self.config_path),
-            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "generated_at_utc": datetime.now(UTC).isoformat(),
             "features": self.feature_metadata,
         }
 

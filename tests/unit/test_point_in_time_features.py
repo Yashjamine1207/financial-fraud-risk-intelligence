@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.fraud_intelligence.features import PointInTimeFeaturePipeline
+from fraud_intelligence.features import PointInTimeFeaturePipeline
 
 
 @pytest.fixture

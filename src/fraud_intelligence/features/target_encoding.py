@@ -13,11 +13,9 @@ Leakage-control rules:
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
 
 import numpy as np
 import pandas as pd
-
 
 MISSING_CATEGORY = "__MISSING__"
 UNKNOWN_CATEGORY = "__UNKNOWN__"
@@ -90,7 +88,7 @@ class TimeSafeTargetEncoder:
         self,
         df: pd.DataFrame,
         target: pd.Series,
-    ) -> "TimeSafeTargetEncoder":
+    ) -> TimeSafeTargetEncoder:
         """
         Learn category fraud-rate mappings from labelled training data only.
 

@@ -1,0 +1,26 @@
+# =============================================================================
+# Phase 4 Logistic Regression baseline configuration
+# =============================================================================
+# This is the interpretable baseline model. It uses the shared Phase 4
+# preprocessing and modelling-data contract defined in configs/modeling.yaml.
+# =============================================================================
+
+model:
+  name: logistic_regression
+  model_version: logistic-regression-v1.0.0
+
+  # C controls regularisation strength. Lower values mean stronger regularisation.
+  C: 0.1
+
+  # In scikit-learn 1.8+, l1_ratio=0.0 explicitly specifies L2 regularisation.
+  l1_ratio: 0.0
+
+  # saga supports sparse transformed feature matrices.
+  solver: saga
+  max_iter: 2000
+  tolerance: 0.007
+
+  # Balances fraud and non-fraud classes during training.
+  class_weight: balanced
+
+  random_state: 42

@@ -64,3 +64,28 @@ coverage.xml
 *.pem
 *.key
 credentials.json
+
+# Private project-reference files (not part of the public portfolio)
+Important GitHub files.md
+Keep only this type of content on G.md
+Project Financial Fraud Risk.md
+The most important Project 1 folder.md
+Use this .gitignore pattern.md
+rules for this project.md
+financial_risk_fraud_decision_intelligence_development_roadmap.pdf
+
+# MLflow database and artifacts
+mlflow.db
+mlruns/
+mlartifacts/
+
+# PostgreSQL data volumes
+postgres_data/
+
+# Large generated reports and figures
+reports/figures/
+models/artifacts/
+models/registry/
+
+# Test pipeline scratch file
+test_pipeline.py
