@@ -1,0 +1,13 @@
+case_group,seed_a,seed_b,top_feature_count,shared_top_feature_count,union_top_feature_count,jaccard_similarity,shared_top_features
+correctly_ranked_fraud,42,52,10,10,10,1.0,C1 | C11 | C14 | C2 | C6 | V258 | V45 | V87 | card6_target_encoded | history_R_emaildomain_transaction_count
+correctly_ranked_fraud,42,62,10,10,10,1.0,C1 | C11 | C14 | C2 | C6 | V258 | V45 | V87 | card6_target_encoded | history_R_emaildomain_transaction_count
+correctly_ranked_fraud,52,62,10,10,10,1.0,C1 | C11 | C14 | C2 | C6 | V258 | V45 | V87 | card6_target_encoded | history_R_emaildomain_transaction_count
+correctly_ranked_legitimate,42,52,10,10,10,1.0,C13 | D13 | D6 | V102 | V258 | V285 | card1 | history_DeviceInfo_transaction_count | history_addr1_transaction_count | velocity_card1_1440min
+correctly_ranked_legitimate,42,62,10,10,10,1.0,C13 | D13 | D6 | V102 | V258 | V285 | card1 | history_DeviceInfo_transaction_count | history_addr1_transaction_count | velocity_card1_1440min
+correctly_ranked_legitimate,52,62,10,10,10,1.0,C13 | D13 | D6 | V102 | V258 | V285 | card1 | history_DeviceInfo_transaction_count | history_addr1_transaction_count | velocity_card1_1440min
+missed_fraud_low_score,42,52,10,9,11,0.8181818181818182,C1 | C11 | C13 | C14 | V70 | amount_global_168h_mean | amount_global_168h_zscore | amount_global_1h_zscore | amount_global_24h_zscore
+missed_fraud_low_score,42,62,10,10,10,1.0,C1 | C11 | C13 | C14 | V70 | amount_card1_168h_zscore | amount_global_168h_mean | amount_global_168h_zscore | amount_global_1h_zscore | amount_global_24h_zscore
+missed_fraud_low_score,52,62,10,9,11,0.8181818181818182,C1 | C11 | C13 | C14 | V70 | amount_global_168h_mean | amount_global_168h_zscore | amount_global_1h_zscore | amount_global_24h_zscore
+unnecessary_review_high_score,42,52,10,9,11,0.8181818181818182,C1 | C13 | C14 | D4 | V258 | V87 | card3 | card6_target_encoded | history_R_emaildomain_transaction_count
+unnecessary_review_high_score,42,62,10,9,11,0.8181818181818182,C1 | C13 | C14 | D4 | V258 | V87 | card3 | card6_target_encoded | history_R_emaildomain_transaction_count
+unnecessary_review_high_score,52,62,10,10,10,1.0,C1 | C13 | C14 | D4 | V258 | V87 | card3 | card6_target_encoded | history_R_emaildomain_transaction_count | id_03

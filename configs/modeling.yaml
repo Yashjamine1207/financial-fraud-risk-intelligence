@@ -22,7 +22,7 @@ data:
 
   # Deliberately documented but not to be read in Phase 4 model development.
   test_path: data/interim/temporal_splits/test.parquet
-  test_locked: true
+  final_test_locked: true
 
   target_column: isFraud
   transaction_id_column: TransactionID
