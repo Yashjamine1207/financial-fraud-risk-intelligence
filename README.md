@@ -76,7 +76,7 @@ Validation capacity sensitivity demonstrates the trade-off between capture and r
 | 1,500 | 655 | 45.20% | 845 | GBP 320,000.00 |
 | 2,000 | 731 | 50.45% | 1,269 | GBP 355,500.00 |
 
-### Controlled advanced ablations
+### Advanced experiments
 
 Anomaly-score, time-safe graph-feature, and compact sequence-model experiments were evaluated as controlled ablations under the same temporal and capacity-aware framework. The calibrated base XGBoost model remained the selected champion because the advanced alternatives did not provide a clear enough improvement in the documented decision-value comparison.
 
@@ -158,7 +158,7 @@ ruff check src tests
 black --check src tests
 ```
 
-The final development test suite passed 113 tests after the Phase 7A stability work was added.
+The final development test suite passed 113 tests, including unit tests for SHAP explanation-stability utilities.
 
 ## Limitations
 
