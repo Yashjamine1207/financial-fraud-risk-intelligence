@@ -1,0 +1,5 @@
+policy_version,selected_review_count,review_capacity,capacity_utilisation,captured_fraud_count,total_fraud_count,fraud_capture_rate,false_positive_review_count,total_expected_review_cost,total_expected_prevention_value,net_expected_value,review_cost_per_case,fraud_prevention_value_per_case,false_negative_cost_per_case,estimated_missed_fraud_count,illustrative_residual_missed_fraud_exposure
+threshold-policy-v1.0.0-capacity-500,500,500,1.0,392,1449,0.2705314009661835,108,2500.0,196000.0,193500.0,5.0,500.0,500.0,1057,528500.0
+threshold-policy-v1.0.0-capacity-1000,1000,1000,1.0,568,1449,0.3919944789510007,432,5000.0,284000.0,279000.0,5.0,500.0,500.0,881,440500.0
+threshold-policy-v1.0.0-capacity-1500,1500,1500,1.0,655,1449,0.4520358868184955,845,7500.0,327500.0,320000.0,5.0,500.0,500.0,794,397000.0
+threshold-policy-v1.0.0-capacity-2000,2000,2000,1.0,731,1449,0.5044858523119393,1269,10000.0,365500.0,355500.0,5.0,500.0,500.0,718,359000.0

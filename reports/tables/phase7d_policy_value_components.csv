@@ -1,0 +1,5 @@
+component,amount_gbp
+Expected prevention value from captured fraud,435000.0
+Manual review cost,-5000.0
+Net expected value,430000.0
+Residual missed-fraud exposure,-1106500.0
