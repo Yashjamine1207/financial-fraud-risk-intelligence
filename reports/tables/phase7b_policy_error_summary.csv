@@ -1,0 +1,2 @@
+model_name,model_version,mlflow_run_id,review_capacity,holdout_transaction_count,reviewed_transaction_count,total_fraud_count,captured_fraud_count,missed_fraud_count,unnecessary_review_count,fraud_capture_rate,review_precision,policy_basis
+xgboost,xgboost-v1.0.0,a1f99cff34cf44728d3b6c9499ffeee3,1000,88581,1000,3083,870,2213,130,0.2821926694777814,0.87,"Top-k ranking at the Phase 5 locked review capacity. Sigmoid calibration is monotonic, so it preserves the classifier score ranking used for review prioritisation."
