@@ -1,0 +1,57 @@
+{
+  "phase": 6,
+  "purpose": "compact_time_safe_sequence_dataset_generation",
+  "sequence_feature_version": "sequence-features-v1.0.0",
+  "dataset_version": "ieee-cis-v1",
+  "point_in_time_feature_version": "point-in-time-v1.0.0",
+  "entity_column": "card1",
+  "timestamp_column": "TransactionDT",
+  "target_column": "isFraud",
+  "sequence_length": 10,
+  "input_features": [
+    "log_transaction_amount",
+    "log_time_since_previous_entity_transaction"
+  ],
+  "padding": "pre",
+  "padding_value": 0.0,
+  "leakage_controls": {
+    "training_history": "strictly_prior_training_timestamps_only",
+    "validation_history": "training_history_plus_strictly_prior_validation_timestamps_only",
+    "same_timestamp_policy": "score_before_history_update",
+    "fraud_labels_used_as_sequence_inputs": false,
+    "final_test_locked": true,
+    "final_test_loaded": false
+  },
+  "train_summary": {
+    "split": "training",
+    "row_count": 413378,
+    "fraud_count": 14538,
+    "fraud_rate": 0.03516878014795175,
+    "sequence_length": 10,
+    "feature_count_per_event": 2,
+    "mean_prior_entity_history_length": 8.170396102356682,
+    "median_prior_entity_history_length": 9.0,
+    "rows_with_prior_entity_history": 401136,
+    "rows_with_prior_entity_history_rate": 0.9703854583456304,
+    "rows_at_max_history_length": 355938,
+    "rows_at_max_history_length_rate": 0.8610472739236243,
+    "minimum_timestamp": 86400.0,
+    "maximum_timestamp": 10437996.0
+  },
+  "validation_summary": {
+    "split": "validation",
+    "row_count": 88581,
+    "fraud_count": 3042,
+    "fraud_rate": 0.03434145019812375,
+    "sequence_length": 10,
+    "feature_count_per_event": 2,
+    "mean_prior_entity_history_length": 8.706110791253204,
+    "median_prior_entity_history_length": 9.0,
+    "rows_with_prior_entity_history": 87906,
+    "rows_with_prior_entity_history_rate": 0.9923798557252684,
+    "rows_at_max_history_length": 83686,
+    "rows_at_max_history_length_rate": 0.9447398426299094,
+    "minimum_timestamp": 10438003.0,
+    "maximum_timestamp": 13151840.0
+  }
+}

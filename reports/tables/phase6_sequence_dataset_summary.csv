@@ -1,0 +1,3 @@
+split,row_count,fraud_count,fraud_rate,sequence_length,feature_count_per_event,mean_prior_entity_history_length,median_prior_entity_history_length,rows_with_prior_entity_history,rows_with_prior_entity_history_rate,rows_at_max_history_length,rows_at_max_history_length_rate,minimum_timestamp,maximum_timestamp
+training,413378,14538,0.03516878014795175,10,2,8.170396102356682,9.0,401136,0.9703854583456304,355938,0.8610472739236243,86400.0,10437996.0
+validation,88581,3042,0.03434145019812375,10,2,8.706110791253204,9.0,87906,0.9923798557252684,83686,0.9447398426299094,10438003.0,13151840.0

@@ -1,0 +1,92 @@
+# =============================================================================
+# Phase 6 - Compact time-safe LSTM / GRU sequence-model ablation
+# =============================================================================
+#
+# Purpose:
+# Test whether short, chronological transaction histories provide incremental
+# fraud-prioritisation value beyond the selected tabular XGBoost baseline.
+#
+# This is a controlled advanced-model ablation. It is not a production sequence
+# service, streaming system, or real-time deployment component.
+# =============================================================================
+
+project:
+  name: financial-fraud-risk-intelligence
+  phase: 6
+  experiment_family: compact_time_safe_sequence_ablation
+  sequence_feature_version: sequence-features-v1.0.0
+
+data:
+  train_feature_path: data/features/point_in_time/train_behavioural_features.parquet
+  validation_feature_path: data/features/point_in_time/validation_behavioural_features.parquet
+
+  # Deliberately not read or written until every Phase 6 model choice is final.
+  final_test_feature_path: data/features/point_in_time/test_behavioural_and_encoded_features.parquet
+  final_test_locked: true
+
+  transaction_id_column: TransactionID
+  timestamp_column: TransactionDT
+  target_column: isFraud
+  entity_column: card1
+  amount_column: TransactionAmt
+
+sequence:
+  # The current transaction is included because its known amount is available
+  # at scoring time. Earlier positions contain only earlier transactions.
+  max_sequence_length: 10
+
+  # All transactions sharing a timestamp are scored from identical prior
+  # entity history before any row from that timestamp updates the history.
+  same_timestamp_policy: score_before_history_update
+
+  # Input features created without labels.
+  input_features:
+    - log_transaction_amount
+    - log_time_since_previous_entity_transaction
+
+  # Left-pad short histories with zeros and provide a Masking layer to Keras.
+  padding: pre
+  padding_value: 0.0
+
+  # The first observed event for an entity receives a zero time-gap value.
+  first_event_time_gap_seconds: 0.0
+
+model:
+  architectures:
+    - gru
+    - lstm
+
+  hidden_units: 32
+  dropout_rate: 0.20
+  recurrent_dropout_rate: 0.0
+  dense_units: 16
+  learning_rate: 0.001
+  batch_size: 512
+  max_epochs: 25
+  early_stopping_patience: 4
+  validation_split_within_train: 0.10
+  random_seed: 42
+  device: cpu
+
+evaluation:
+  review_capacity: 1000
+  validation_calibration_fit_fraction: 0.50
+  calibration_method: sigmoid
+  capacity_sensitivity:
+    - 500
+    - 1000
+    - 1500
+    - 2000
+
+reproducibility:
+  dataset_version: ieee-cis-v1
+  point_in_time_feature_version: point-in-time-v1.0.0
+  target_encoding_version: time-safe-te-v1.0.0
+  model_version_prefix: compact-sequence
+
+outputs:
+  train_sequence_path: data/features/sequences/train_card1_sequences.npz
+  validation_sequence_path: data/features/sequences/validation_card1_sequences.npz
+
+  sequence_metadata_path: reports/tables/phase6_sequence_dataset_metadata.json
+  sequence_summary_path: reports/tables/phase6_sequence_dataset_summary.csv

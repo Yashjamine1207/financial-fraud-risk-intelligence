@@ -1,0 +1,140 @@
+# =============================================================================
+# Phase 6 — Time-safe graph-feature configuration
+# =============================================================================
+#
+# Purpose:
+# Build graph-derived transaction features from historical entity relationships.
+#
+# Leakage rules:
+# - A transaction can use only graph state built from TransactionDT values
+#   strictly earlier than its own TransactionDT.
+# - Transactions with the same TransactionDT are scored as one batch before
+#   any rows from that batch update graph state.
+# - Validation graph state starts with historical training relationships and
+#   then updates only with earlier validation transactions.
+# - Final-test graph state may use prior train, prior validation, and earlier
+#   test transactions only after all validation-based choices are locked.
+# - Fraud labels must never be used in graph construction or graph features.
+# =============================================================================
+
+project:
+  name: financial-fraud-risk-intelligence
+  phase: 6
+  feature_family: time_safe_graph_features
+  graph_feature_version: graph-features-v1.0.0
+
+data:
+  timestamp_column: TransactionDT
+  target_column: isFraud
+  transaction_id_column: TransactionID
+
+  train_feature_path: data/features/point_in_time/train_behavioural_features.parquet
+  validation_feature_path: data/features/point_in_time/validation_behavioural_features.parquet
+  final_test_feature_path: data/features/point_in_time/test_behavioural_and_encoded_features.parquet
+
+  final_test_locked: true
+  train_graph_output_path: data/features/graph/train_graph_features.parquet
+  validation_graph_output_path: data/features/graph/validation_graph_features.parquet
+  # This path is intentionally unused until the graph candidate is selected
+  # through validation-only comparison.
+  final_test_graph_output_path: data/features/graph/test_graph_features.parquet
+
+graph:
+  graph_type: undirected_bipartite_entity_graph
+
+  # Stable entity proxies available in the IEEE-CIS benchmark dataset.
+  primary_entity: card1
+
+  relationship_entities:
+    - DeviceInfo
+    - R_emaildomain
+
+  # Entity values that are missing must not form one shared graph node.
+  # Missing values therefore create no card-device or card-email edge.
+  skip_missing_entity_values: true
+
+  # Prefixes prevent collisions between values that look the same but belong
+  # to different entity families, for example card1=1234 and DeviceInfo="1234".
+  node_prefixes:
+    card1: "card1::"
+    DeviceInfo: "device::"
+    R_emaildomain: "remail::"
+
+  # Same-second transactions must not create graph information for one another.
+  same_timestamp_policy: score_before_graph_update
+
+  # The graph is updated after every timestamp batch. This makes relationships
+  # available only to later timestamps.
+  update_policy: add_edges_after_timestamp_batch
+
+features:
+  # Number of distinct prior device and recipient-email nodes connected to card1.
+  - graph_card1_prior_degree
+
+  # Number of distinct earlier card1 nodes linked to the current device.
+  - graph_deviceinfo_prior_card_degree
+
+  # Number of distinct earlier card1 nodes linked to the current recipient email.
+  - graph_remail_prior_card_degree
+
+  # Number of earlier transactions containing the same card1-device relationship.
+  - graph_card1_device_prior_edge_count
+
+  # Number of earlier transactions containing the same card1-email relationship.
+  - graph_card1_remail_prior_edge_count
+
+  # Number of nodes in the historical connected component containing card1.
+  - graph_card1_prior_component_size
+
+  # Number of nodes in the historical connected component containing DeviceInfo.
+  - graph_deviceinfo_prior_component_size
+
+  # Number of nodes in the historical connected component containing R_emaildomain.
+  - graph_remail_prior_component_size
+
+  # Indicates whether the available relationship has never appeared historically.
+  - is_new_card1_device_relationship
+
+  # Indicates whether the available relationship has never appeared historically.
+  - is_new_card1_remail_relationship
+
+missing_value_policy:
+  # If DeviceInfo or R_emaildomain is missing, graph features that depend on
+  # that value remain missing rather than treating all missing records as one node.
+  relationship_feature_missing_value: null
+
+  # If card1 is missing, all card1-based graph features remain missing.
+  primary_entity_feature_missing_value: null
+
+ablation:
+  baseline_model: xgboost-v1.0.0
+  candidate_model: xgboost-plus-graph-v1.0.0
+
+  # Phase 4/5 comparison conditions that must stay unchanged.
+  review_capacity: 1000
+  calibration_method: sigmoid
+  calibration_fit_fraction: 0.50
+  policy_selection_period: latest_validation_period
+
+  ranking_metrics:
+    - pr_auc
+    - roc_auc
+    - precision_at_k
+    - recall_at_k
+    - captured_fraud_count_at_k
+
+  policy_metrics:
+    - captured_fraud_count
+    - fraud_capture_rate
+    - net_expected_value
+
+  decision_rule: >
+    Retain graph features only if the candidate improves fraud capture or net
+    expected value at the configured operational review capacity of 1000,
+    without invalidating leakage controls or reducing decision reliability.
+
+reproducibility:
+  random_seed: 42
+  dataset_version: ieee-cis-v1
+  point_in_time_feature_version: point-in-time-v1.0.0
+  target_encoding_version: time-safe-te-v1.0.0
