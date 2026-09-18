@@ -170,3 +170,61 @@ The project will be built in phases.
 Each completed milestone will be tested and committed to GitHub before the next phase begins.
 
 The MVP will be completed before adding LSTM or GRU models, graph analysis, LLM features, Kafka, streaming, or cloud deployment.
+
+<!-- FINAL_RESULTS:START -->
+
+## Final Model and Results
+
+### Selected approach
+
+The final benchmark model is **XGBoost** (`xgboost-v1.0.0`),
+with sigmoid / Platt calibration and a constrained top-
+`1,000` transaction review policy.
+
+The model family, feature set, calibration method, and policy were selected using
+chronological training and validation periods. The final chronological holdout was
+reserved for locked evaluation.
+
+### Final holdout performance
+
+| Metric | Result |
+| --- | ---: |
+| Review capacity | 1,000 |
+| Fraud-labelled transactions | 3,083 |
+| Captured fraud | 870 |
+| Fraud capture rate | 28.22% |
+| Legitimate transactions reviewed | 130 |
+| Review precision | 87.00% |
+| Illustrative net expected value | GBP 430,000.00 |
+
+The net expected value is a benchmark calculation under documented illustrative
+cost assumptions. It is not realised savings or a real financial-institution
+forecast.
+
+### Why this model
+
+- XGBoost was selected after chronological comparison against Logistic Regression.
+- Sigmoid calibration reduced validation Brier score from
+  `0.0685` to
+  `0.0229` and ECE from
+  `0.1612` to
+  `0.0037`.
+- The final policy respects a fixed investigation capacity instead of using an
+  arbitrary probability threshold.
+- Phase 6 anomaly, graph, and sequence experiments were treated as controlled
+  ablations; the simpler calibrated XGBoost model remained the selected champion.
+- Phase 7 includes global and local SHAP attribution, SHAP stability checks,
+  missed-fraud and unnecessary-review analysis, and capacity/value trade-offs.
+
+### Main limitations
+
+- This is an IEEE-CIS public-data benchmark, not a production fraud system.
+- SHAP contributors describe model behaviour and do not prove fraud or causation.
+- Review capacity and financial values are documented illustrative assumptions.
+- Results should not be presented as actual fraud savings, institutional
+  performance, or a deployed financial-service product.
+
+See the final summary in
+[`reports/evaluation/final_model_selection_report.md`](reports/evaluation/final_model_selection_report.md).
+
+<!-- FINAL_RESULTS:END -->

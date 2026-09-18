@@ -1,0 +1,4 @@
+experiment,review_capacity,baseline_captured_fraud,candidate_captured_fraud,captured_fraud_difference,baseline_net_expected_value,candidate_net_expected_value,net_expected_value_difference,selection_decision
+Isolation Forest anomaly-score feature,1000,568,567,-1,279000.0,278500.0,-500.0,Rejected as champion replacement
+Time-safe graph features,1000,568,564,-4,279000.0,277000.0,-2000.0,Rejected as champion replacement
+Compact LSTM sequence model,1000,568,121,-447,279000.0,55500.0,-223500.0,Rejected as champion replacement
